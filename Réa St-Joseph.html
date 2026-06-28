@@ -1,0 +1,637 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
+:root{
+  --accent:#7A2D46;--accent-light:#f3e8ec;--accent-mid:#c8909f;
+  --navy:#0f2744;--navy-mid:#1a3a5c;--navy-light:#e8eef6;
+  --surface:#ffffff;--surface-1:#f4f7fb;--surface-2:#ffffff;
+  --border:#dde4ef;--border-strong:#b8c5d8;
+  --text:#0f2744;--text-2:#4a6080;--text-3:#8aa0b8;
+  --success:#0e7c5a;--success-bg:#e6f5f0;
+  --warn:#b45309;--warn-bg:#fff7ed;
+  --danger:#be123c;--danger-bg:#fff1f2;
+  --pro:#5b21b6;--pro-bg:#f5f0ff;
+  --radius:10px;--shadow:0 2px 12px rgba(15,39,68,.08);--shadow-md:0 4px 20px rgba(15,39,68,.12);
+  /* Aliases used by original JS */
+  --fill-accent:var(--accent);--bg-accent:var(--accent-light);--border-accent:var(--accent-mid);--text-accent:var(--accent);--on-accent:#fff;
+  --fill-success:#0e7c5a;--bg-success:#e6f5f0;--text-success:#0e7c5a;
+  --fill-warning:#b45309;--bg-warning:#fff7ed;--text-warning:#b45309;
+  --fill-danger:#be123c;--bg-danger:#fff1f2;--border-danger:#fda4af;--text-danger:#be123c;
+  --fill-pro:#5b21b6;--bg-pro:#f5f0ff;--border-pro:#c4b5fd;--text-pro:#5b21b6;
+  --fill-meta:#0e7c5a;--bg-meta:#e6f5f0;--text-meta:#0e7c5a;
+  --surface-0:var(--surface-1);--border-stronger:var(--border-strong);
+  --font-sans:'Inter',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans);background:var(--surface-1);color:var(--text)}
+.app{max-width:100%;padding:0}
+
+/* Header */
+.header{display:flex;align-items:center;gap:12px;padding:11px 18px;background:var(--navy);border-bottom:none;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(15,39,68,.18)}
+.header-title{font-size:15px;font-weight:600;flex:1;color:#fff;letter-spacing:.01em}
+#clock{color:rgba(255,255,255,.55)!important;font-size:12px}
+
+/* Patient strip */
+.patient-strip{display:flex;gap:6px;padding:10px 16px;overflow-x:auto;background:var(--navy-mid);border-bottom:none}
+.pat-btn{min-width:44px;height:32px;border-radius:8px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.08);font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;color:rgba(255,255,255,.7);flex-shrink:0}
+.pat-btn.active{background:#fff;border-color:#fff;color:var(--navy)}
+.pat-btn.alert{background:var(--danger-bg);border-color:var(--danger);color:var(--danger)}
+
+/* Tabs */
+.tabs{display:flex;border-bottom:1px solid var(--border);background:var(--surface);overflow-x:auto;padding:0 8px}
+.tab{padding:10px 14px;font-size:12px;font-weight:500;cursor:pointer;color:var(--text-2);border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+
+/* Content */
+.content{padding:14px 16px;overflow-y:auto;max-height:calc(100vh - 180px);background:var(--surface-1)}
+.section{margin-bottom:16px}
+.section-title{font-size:10.5px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+
+/* Fields */
+.field{display:flex;flex-direction:column;gap:3px}
+.field label{font-size:11px;color:var(--text-2);font-weight:500}
+.field input,.field select,.field textarea{font-size:13px;padding:7px 9px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);width:100%;transition:border-color .15s}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--accent-mid)}
+.field textarea{resize:vertical;min-height:60px}
+
+/* Cards */
+.round-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 14px;margin-bottom:10px;box-shadow:var(--shadow)}
+.round-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.round-label{font-size:12px;font-weight:600;color:var(--text-2)}
+.badge{font-size:11px;padding:2px 9px;border-radius:20px;font-weight:500}
+.badge-ok{background:var(--success-bg);color:var(--success)}
+.badge-warn{background:var(--warn-bg);color:var(--warn)}
+
+/* Events */
+.event-card{border-radius:10px;padding:9px 11px;margin-bottom:7px;border-left:3px solid;box-shadow:var(--shadow)}
+.event-neuro{background:var(--pro-bg);border-color:var(--pro)}
+.event-resp{background:var(--accent-light);border-color:var(--accent)}
+.event-hemody{background:var(--danger-bg);border-color:var(--danger)}
+.event-gen{background:var(--warn-bg);border-color:var(--fill-warning)}
+.event-meta{background:var(--success-bg);border-color:var(--success)}
+.event-sept{background:var(--surface-1);border-color:var(--border-strong)}
+.event-tag{font-size:11px;font-weight:600;margin-bottom:3px;color:var(--text-2)}
+.event-text{font-size:13px;color:var(--text)}
+
+/* Buttons */
+.btn-add{display:flex;align-items:center;gap:6px;font-size:13px;padding:7px 12px;border-radius:8px;border:1px dashed var(--accent-mid);background:var(--accent-light);color:var(--accent);cursor:pointer;width:100%;justify-content:center;margin-top:6px;font-weight:500;transition:all .15s}
+.btn-add:hover{background:var(--accent);color:#fff;border-style:solid}
+.btn-primary{padding:7px 16px;border-radius:8px;background:var(--accent);color:#fff;border:none;font-size:13px;cursor:pointer;font-weight:500}
+.btn-cancel{padding:7px 16px;border-radius:8px;background:transparent;color:var(--text-2);border:1px solid var(--border);font-size:13px;cursor:pointer}
+.btn-del{width:24px;height:24px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text-3);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.btn-del:hover{border-color:var(--danger);color:var(--danger)}
+
+/* Rows */
+.ivse-row{display:grid;grid-template-columns:1fr 80px 70px 28px;gap:6px;align-items:center;margin-bottom:6px}
+.ivse-row input{font-size:12px}
+.bilan-row{display:flex;gap:8px;margin-bottom:6px}
+.bilan-row input{flex:1;font-size:12px;padding:5px 8px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text)}
+.consigne-row{display:flex;gap:8px;margin-bottom:6px}
+.consigne-row input{flex:1;font-size:13px;padding:7px 10px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text)}
+.check-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border)}
+.check-row:last-child{border-bottom:none}
+.check-row label{font-size:13px;flex:1;cursor:pointer}
+.check-row input[type=checkbox]{width:16px;height:16px;cursor:pointer;accent-color:var(--accent)}
+
+/* Misc */
+.notes-area{width:100%;min-height:120px;font-size:14px;padding:10px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);resize:vertical;line-height:1.6}
+.rass-select{font-size:13px}
+.vent-toggle{display:flex;gap:0;margin-bottom:10px;border-radius:8px;overflow:hidden;border:1px solid var(--border)}
+.vent-btn{flex:1;padding:7px;border:none;border-right:1px solid var(--border);font-size:12px;font-weight:500;cursor:pointer;background:var(--surface);color:var(--text-2);transition:all .15s}
+.vent-btn:last-child{border-right:none}
+.vent-btn.active{background:var(--navy);color:#fff}
+.pupil-row{display:flex;gap:16px}
+.pupil-col{flex:1}
+.pupil-col label{font-size:11px;color:var(--text-2);display:block;margin-bottom:3px}
+.sep{height:1px;background:var(--border);margin:12px 0}
+.tag-select{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.tag-opt{padding:4px 10px;border-radius:20px;font-size:12px;border:1px solid var(--border);cursor:pointer;color:var(--text-2);background:var(--surface);transition:all .15s}
+.tag-opt.sel-neuro{background:var(--pro-bg);border-color:var(--pro);color:var(--pro)}
+.tag-opt.sel-resp{background:var(--accent-light);border-color:var(--accent);color:var(--accent)}
+.tag-opt.sel-hemody{background:var(--danger-bg);border-color:var(--danger);color:var(--danger)}
+.tag-opt.sel-gen{background:var(--warn-bg);border-color:var(--fill-warning);color:var(--warn)}
+.tag-opt.sel-meta{background:var(--success-bg);border-color:var(--success);color:var(--success)}
+.tag-opt.sel-sept{background:var(--surface-1);border-color:var(--border-strong);color:var(--text)}
+.infect-row{background:var(--danger-bg);border:1px solid var(--border);border-left:3px solid var(--danger);border-radius:10px;padding:10px 12px;margin-bottom:8px;box-shadow:var(--shadow)}
+.infect-label{font-size:11px;font-weight:600;color:var(--danger);margin-bottom:6px}
+.priority-badge{font-size:10px;padding:2px 8px;border-radius:20px;font-weight:500;cursor:pointer;white-space:nowrap}
+.p-high{background:var(--danger-bg);color:var(--danger)}
+.p-med{background:var(--warn-bg);color:var(--warn)}
+.p-low{background:var(--success-bg);color:var(--success)}
+.modal-overlay{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(15,39,68,.45);display:flex;align-items:center;justify-content:center;z-index:200;border-radius:12px}
+.modal{background:var(--surface);border-radius:14px;padding:18px;width:90%;max-width:400px;border:1px solid var(--border);box-shadow:var(--shadow-md)}
+.modal h3{font-size:15px;font-weight:600;margin-bottom:12px;color:var(--navy)}
+.modal-btns{display:flex;gap:8px;margin-top:12px;justify-content:flex-end}
+.sum-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:8px 10px;box-shadow:var(--shadow)}
+.sum-val{font-size:18px;font-weight:600;color:var(--text)}
+.sum-lbl{font-size:11px;color:var(--text-3)}
+/* Examens complémentaires fond jaune pastel */
+.examen-block{background:#fefce8;border:1px solid #fde047;border-radius:12px;padding:12px 14px;margin-top:10px}
+.examen-block .examen-sub{font-size:11px;font-weight:600;color:#854d0e;text-transform:uppercase;letter-spacing:.06em;margin:8px 0 5px}
+.examen-block .examen-sub:first-child{margin-top:0}
+.examen-row-grid{display:grid;grid-template-columns:1fr 90px 95px 26px;gap:5px;margin-bottom:5px;align-items:center}
+.examen-row-grid input{font-size:12px;padding:5px 7px;border-radius:7px;border:1px solid #fde047;background:#fff;color:var(--text);width:100%}
+.btn-add-yellow{display:flex;align-items:center;gap:6px;font-size:12px;padding:6px 10px;border-radius:8px;border:1px dashed #ca8a04;background:#fef9c3;color:#854d0e;cursor:pointer;width:100%;justify-content:center;margin-top:4px;font-weight:500;transition:all .15s}
+.btn-add-yellow:hover{background:#ca8a04;color:#fff;border-style:solid}
+</style>
+
+<div class="app" style="position:relative;min-height:400px" id="app">
+<h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden">Application de garde en réanimation — suivi des 11 patients</h2>
+
+<div class="header">
+  <span style="font-size:20px" aria-hidden="true">🦄</span>
+  <span class="header-title">Réa St-Joseph</span>
+  <span id="clock" style="font-size:12px;color:var(--text-muted)"></span>
+</div>
+
+<div class="patient-strip" id="patStrip"></div>
+
+<div class="tabs" id="tabBar">
+  <div class="tab active" onclick="switchTab(0)"><i class="ti ti-clipboard-list" aria-hidden="true"></i> Bilan initial</div>
+  <div class="tab" onclick="switchTab(1)"><i class="ti ti-clock" aria-hidden="true"></i> Tournées</div>
+  <div class="tab" onclick="switchTab(2)"><i class="ti ti-notes" aria-hidden="true"></i> Consignes</div>
+  <div class="tab" onclick="switchTab(3)"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Événements</div>
+  <div class="tab" onclick="switchTab(4)"><i class="ti ti-writing" aria-hidden="true"></i> Notes</div>
+  <div class="tab" onclick="switchTab(5)" style="border-left:1px solid var(--border)"><i class="ti ti-list-check" aria-hidden="true"></i> Toutes consignes</div>
+</div>
+
+<div class="content" id="mainContent"></div>
+</div>
+
+<script>
+const N_PAT = 11;
+let curPat = 0;
+let curTab = 0;
+
+const defaultPat = () => ({
+  nom: '', age: '', motif: '', poids: '',
+  antecedents: '', histoire: '',
+  examCompl: {bio:[{intitule:'',date:'',resultat:''}],imagerie:[{intitule:'',date:'',conclusion:''}]},
+  // Étape 1
+  vitaux: {fc:'',pas:'',pad:'',temp:'',diurese:'',glycemie:'',rass:'0',
+    drains:[{desc:'',quantite:'',aspect:''}],
+    pupG_taille:'',pupD_taille:'',reactG:false,reactD:false,egales:true},
+  vent: {mode:'VAC',fr:'',vt:'',peep:'',fio2:'',ai:'',vsai_fr:'',vsai_vt:'',spo2:''},
+  balance: {
+    entrees_perf:'',entrees_enterale:'',entrees_autres:'',
+    sorties_diurese:'',sorties_drain:'',sorties_autres:''
+  },
+  bilan: {date:'',results:[{nom:'',val:''}]},
+  infectieux: [{type:'',date:'',germen:'',atb:'',dateAtb:''}],
+  ivse: [{nom:'',dose:'',vitesse:''}],
+  perf: [{nom:'',vol:'',debit:''}],
+  checklist: {ration:false,enterale:false,parenterale:false,sng:false,gastroprot:false,thrombopro:false,atb:false,antiepilep:false,autres:''},
+  // Étape 2
+  tournees: [{h:'H0',fc:'',diurese:'',temp:'',glycemie:'',auscult:'',position:''}],
+  consignes: [],
+  // Étape 4 — events per patient
+  events: [],
+  alertFlag: false,
+  notes: ''
+});
+
+let pats = Array.from({length:N_PAT}, defaultPat);
+let globalConsignes = [];
+let globalNotes = '';
+
+function updateClock(){
+  const n=new Date();
+  document.getElementById('clock').textContent=n.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+}
+setInterval(updateClock,1000);
+updateClock();
+
+function buildPatStrip(){
+  const el=document.getElementById('patStrip');
+  el.innerHTML=pats.map((p,i)=>`<button class="pat-btn${i===curPat?' active':''}${p.alertFlag?' alert':''}" onclick="selPat(${i})">P${i+1}${p.nom?'<br><span style="font-size:10px">'+p.nom.substring(0,5)+'</span>':''}</button>`).join('');
+}
+
+function selPat(i){curPat=i;buildPatStrip();render();}
+
+function switchTab(i){
+  curTab=i;
+  document.querySelectorAll('.tab').forEach((t,idx)=>t.classList.toggle('active',idx===i));
+  render();
+}
+
+function f(path,val){
+  const p=pats[curPat];
+  const keys=path.split('.');
+  let obj=p;
+  for(let i=0;i<keys.length-1;i++) obj=obj[keys[i]];
+  if(val===undefined) return obj[keys[keys.length-1]];
+  obj[keys[keys.length-1]]=val;
+  return val;
+}
+
+function inp(path,label,type='text',placeholder=''){
+  const v=f(path)||'';
+  return `<div class="field"><label>${label}</label><input type="${type}" value="${v.toString().replace(/"/g,'&quot;')}" placeholder="${placeholder}" oninput="f('${path}',this.value)"></div>`;
+}
+
+function chk(path,label){
+  const v=f(path)||false;
+  return `<div class="check-row"><input type="checkbox" id="chk_${path}" ${v?'checked':''} onchange="f('${path}',this.checked)"><label for="chk_${path}">${label}</label></div>`;
+}
+
+function renderTab0(){
+  const p=pats[curPat];
+  const v=p.vitaux, ve=p.vent;
+  return `
+<div class="round-card" style="border-left:3px solid var(--accent);background:var(--accent-light)">
+  <div class="section-title" style="color:var(--accent);margin-bottom:10px">📁 Dossier permanent</div>
+  <div class="grid-3" style="margin-bottom:8px">
+    ${inp('nom','Nom / initiales','text','ex: Dupont J.')}
+    ${inp('age','Âge','number','années')}
+    ${inp('motif','Motif d\'admission','text','ex: SDRA')}
+  </div>
+  <div class="field" style="margin-bottom:8px">
+    <label>Antécédents</label>
+    <textarea oninput="f('antecedents',this.value)">${p.antecedents||''}</textarea>
+  </div>
+  <div class="field" style="margin-bottom:10px">
+    <label>Histoire de la maladie</label>
+    <textarea oninput="f('histoire',this.value)">${p.histoire||''}</textarea>
+  </div>
+  <div class="examen-block">
+    <div class="section-title" style="color:#92400e">Examens complémentaires</div>
+    <div class="examen-sub">Biologie</div>
+    <div style="display:grid;grid-template-columns:1fr 90px 95px 26px;gap:5px;margin-bottom:4px">
+      <span style="font-size:10px;color:#92400e;font-weight:500">Examen</span>
+      <span style="font-size:10px;color:#92400e;font-weight:500">Résultat</span>
+      <span style="font-size:10px;color:#92400e;font-weight:500">Date</span><span></span>
+    </div>
+    ${p.examCompl.bio.map((b,i)=>`<div class="examen-row-grid">
+      <input placeholder="ex: NFS, CRP, lactates…" value="${b.intitule||''}" oninput="pats[${curPat}].examCompl.bio[${i}].intitule=this.value">
+      <input placeholder="valeur" value="${b.resultat||''}" oninput="pats[${curPat}].examCompl.bio[${i}].resultat=this.value">
+      <input type="date" value="${b.date||''}" oninput="pats[${curPat}].examCompl.bio[${i}].date=this.value">
+      <button class="btn-del" onclick="pats[${curPat}].examCompl.bio.splice(${i},1);render()"><i class="ti ti-x"></i></button>
+    </div>`).join('')}
+    <button class="btn-add-yellow" onclick="pats[${curPat}].examCompl.bio.push({intitule:'',date:'',resultat:''});render()"><i class="ti ti-plus"></i> Ajouter bilan biologique</button>
+    <div class="examen-sub">Imagerie</div>
+    <div style="display:grid;grid-template-columns:1fr 90px 95px 26px;gap:5px;margin-bottom:4px">
+      <span style="font-size:10px;color:#92400e;font-weight:500">Examen</span>
+      <span style="font-size:10px;color:#92400e;font-weight:500">Conclusion</span>
+      <span style="font-size:10px;color:#92400e;font-weight:500">Date</span><span></span>
+    </div>
+    ${p.examCompl.imagerie.map((im,i)=>`<div class="examen-row-grid">
+      <input placeholder="ex: Radio thorax, TDM…" value="${im.intitule||''}" oninput="pats[${curPat}].examCompl.imagerie[${i}].intitule=this.value">
+      <input placeholder="conclusion" value="${im.conclusion||''}" oninput="pats[${curPat}].examCompl.imagerie[${i}].conclusion=this.value">
+      <input type="date" value="${im.date||''}" oninput="pats[${curPat}].examCompl.imagerie[${i}].date=this.value">
+      <button class="btn-del" onclick="pats[${curPat}].examCompl.imagerie.splice(${i},1);render()"><i class="ti ti-x"></i></button>
+    </div>`).join('')}
+    <button class="btn-add-yellow" onclick="pats[${curPat}].examCompl.imagerie.push({intitule:'',date:'',conclusion:''});render()"><i class="ti ti-plus"></i> Ajouter imagerie</button>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Paramètres vitaux (veille)</div>
+  <div class="grid-3">
+    ${inp('vitaux.fc','FC (bpm)','number','80')}
+    ${inp('vitaux.pas','PAS (mmHg)','number','120')}
+    ${inp('vitaux.pad','PAD (mmHg)','number','70')}
+    ${inp('vitaux.temp','Température (°C)','number','37.5')}
+    ${inp('vitaux.diurese','Diurèse (mL/h)','number','50')}
+    ${inp('vitaux.glycemie','Glycémie cap. (g/L)','number','1.2')}
+  </div>
+  <div class="grid-2" style="margin-top:8px">
+    <div class="field"><label>RASS</label>
+      <select class="rass-select" onchange="f('vitaux.rass',this.value)">
+        ${[-5,-4,-3,-2,-1,0,1,2,3,4].map(r=>`<option value="${r}" ${v.rass==r?'selected':''}>${r} — ${['Non réveillable','Sédation profonde','Sédation modérée','Sédation légère','Somnolence','Éveillé/calme','Agité','Très agité','Combatif','Extrêmement combatif'][r+5]}</option>`).join('')}
+      </select>
+    </div>
+  </div>
+
+  <div style="margin-top:10px">
+    <div class="section-title">Drains</div>
+    <div style="display:grid;grid-template-columns:1fr 80px 1fr 28px;gap:5px;margin-bottom:4px">
+      <span style="font-size:10px;color:var(--text-3);font-weight:500">Description</span>
+      <span style="font-size:10px;color:var(--text-3);font-weight:500">Qté (mL)</span>
+      <span style="font-size:10px;color:var(--text-3);font-weight:500">Aspect</span>
+      <span></span>
+    </div>
+    ${v.drains.map((d,i)=>`<div style="display:grid;grid-template-columns:1fr 80px 1fr 28px;gap:5px;margin-bottom:5px;align-items:center">
+      <input style="font-size:12px;padding:5px 8px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);width:100%" placeholder="ex: JP, pleurostomie…" value="${d.desc||''}" oninput="pats[${curPat}].vitaux.drains[${i}].desc=this.value">
+      <input type="number" style="font-size:12px;padding:5px 8px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);width:100%" placeholder="50" value="${d.quantite||''}" oninput="pats[${curPat}].vitaux.drains[${i}].quantite=this.value">
+      <input style="font-size:12px;padding:5px 8px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);width:100%" placeholder="ex: séreux, hématique…" value="${d.aspect||''}" oninput="pats[${curPat}].vitaux.drains[${i}].aspect=this.value">
+      <button class="btn-del" onclick="pats[${curPat}].vitaux.drains.splice(${i},1);render()"><i class="ti ti-x"></i></button>
+    </div>`).join('')}
+    <button class="btn-add" onclick="pats[${curPat}].vitaux.drains.push({desc:'',quantite:'',aspect:''});render()"><i class="ti ti-plus"></i> Ajouter drain</button>
+  </div>
+
+  <div style="margin-top:10px">
+    <div class="section-title">Pupilles</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px">
+      <div style="background:var(--surface-1);border:1px solid var(--border);border-radius:10px;padding:9px 10px">
+        <div style="font-size:11px;font-weight:600;color:var(--text-2);margin-bottom:6px">Pupille gauche</div>
+        <div class="field" style="margin-bottom:5px">
+          <label>Taille</label>
+          <select onchange="f('vitaux.pupG_taille',this.value)">
+            <option value="">— choisir —</option>
+            ${['myosis serré','myosis','semi-mydriase','mydriase'].map(t=>`<option value="${t}" ${v.pupG_taille===t?'selected':''}>${t}</option>`).join('')}
+          </select>
+        </div>
+        <div class="check-row" style="border:none;padding:0"><input type="checkbox" id="cG" ${v.reactG?'checked':''} onchange="f('vitaux.reactG',this.checked)"><label for="cG">Réactive</label></div>
+      </div>
+      <div style="background:var(--surface-1);border:1px solid var(--border);border-radius:10px;padding:9px 10px">
+        <div style="font-size:11px;font-weight:600;color:var(--text-2);margin-bottom:6px">Pupille droite</div>
+        <div class="field" style="margin-bottom:5px">
+          <label>Taille</label>
+          <select onchange="f('vitaux.pupD_taille',this.value)">
+            <option value="">— choisir —</option>
+            ${['myosis serré','myosis','semi-mydriase','mydriase'].map(t=>`<option value="${t}" ${v.pupD_taille===t?'selected':''}>${t}</option>`).join('')}
+          </select>
+        </div>
+        <div class="check-row" style="border:none;padding:0"><input type="checkbox" id="cD" ${v.reactD?'checked':''} onchange="f('vitaux.reactD',this.checked)"><label for="cD">Réactive</label></div>
+      </div>
+    </div>
+    <div class="check-row" style="padding:5px 0"><input type="checkbox" id="egales" ${v.egales?'checked':''} onchange="f('vitaux.egales',this.checked)"><label for="egales">Égales (isocorie)</label></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Ventilation</div>
+  <div class="vent-toggle">
+    <button class="vent-btn${ve.mode==='VAC'?' active':''}" onclick="f('vent.mode','VAC');render()">VAC</button>
+    <button class="vent-btn${ve.mode==='VSAI'?' active':''}" onclick="f('vent.mode','VSAI');render()">VSAI</button>
+    <button class="vent-btn${ve.mode==='Extubé'?' active':''}" onclick="f('vent.mode','Extubé');render()">Extubé / VNI</button>
+  </div>
+  ${ve.mode==='VAC'?`<div class="grid-3">
+    ${inp('vent.fr','FR réglée','number','14')}
+    ${inp('vent.vt','VT réglé (mL)','number','420')}
+    ${inp('vent.peep','PEP (cmH₂O)','number','5')}
+    ${inp('vent.fio2','FiO₂ (%)','number','40')}
+    ${inp('vent.spo2','SpO₂ (%)','number','97')}
+    ${inp('vent.pc','Pression plateau','number','')}
+  </div>`:ve.mode==='VSAI'?`<div class="grid-3">
+    ${inp('vent.ai','Aide inspi (cmH₂O)','number','10')}
+    ${inp('vent.peep','PEP (cmH₂O)','number','5')}
+    ${inp('vent.fio2','FiO₂ (%)','number','35')}
+    ${inp('vent.vsai_fr','FR mesurée','number','18')}
+    ${inp('vent.vsai_vt','VT mesuré (mL)','number','400')}
+    ${inp('vent.spo2','SpO₂ (%)','number','97')}
+  </div>`:`<div class="grid-2">${inp('vent.spo2','SpO₂ (%)','number','97')}${inp('vent.fio2','FiO₂ / débit O₂','text','3L/min')}</div>`}
+</div>
+
+<div class="section">
+  <div class="section-title">Balance hydrique (veille)</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+    <div style="background:var(--surface-1);border:1px solid var(--border);border-radius:10px;padding:9px 10px">
+      <div style="font-size:11px;font-weight:600;color:var(--success);margin-bottom:6px">⬆ Entrées</div>
+      ${inp('balance.entrees_perf','Perfusions (mL)','number','')}
+      <div style="margin-top:5px">${inp('balance.entrees_enterale','Entérale (mL)','number','')}</div>
+      <div style="margin-top:5px">${inp('balance.entrees_autres','Autres (mL)','number','')}</div>
+      ${(()=>{const t=(parseInt(p.balance.entrees_perf)||0)+(parseInt(p.balance.entrees_enterale)||0)+(parseInt(p.balance.entrees_autres)||0);return t?`<div style="margin-top:6px;font-size:12px;font-weight:600;color:var(--success)">Total : ${t} mL</div>`:''})()}
+    </div>
+    <div style="background:var(--surface-1);border:1px solid var(--border);border-radius:10px;padding:9px 10px">
+      <div style="font-size:11px;font-weight:600;color:var(--danger);margin-bottom:6px">⬇ Sorties</div>
+      ${inp('balance.sorties_diurese','Diurèse (mL)','number','')}
+      <div style="margin-top:5px">${inp('balance.sorties_drain','Drains (mL)','number','')}</div>
+      <div style="margin-top:5px">${inp('balance.sorties_autres','Autres (mL)','number','')}</div>
+      ${(()=>{const t=(parseInt(p.balance.sorties_diurese)||0)+(parseInt(p.balance.sorties_drain)||0)+(parseInt(p.balance.sorties_autres)||0);return t?`<div style="margin-top:6px;font-size:12px;font-weight:600;color:var(--danger)">Total : ${t} mL</div>`:''})()}
+    </div>
+  </div>
+  ${(()=>{
+    const e=(parseInt(p.balance.entrees_perf)||0)+(parseInt(p.balance.entrees_enterale)||0)+(parseInt(p.balance.entrees_autres)||0);
+    const s=(parseInt(p.balance.sorties_diurese)||0)+(parseInt(p.balance.sorties_drain)||0)+(parseInt(p.balance.sorties_autres)||0);
+    const b=e-s;
+    return (e||s)?`<div style="margin-top:8px;padding:7px 12px;border-radius:8px;background:${b>0?'var(--warn-bg)':'var(--success-bg)'};font-size:13px;font-weight:600;color:${b>0?'var(--warn)':'var(--success)'}">Balance : ${b>0?'+':''}${b} mL</div>`:'';
+  })()}
+</div>
+
+<div class="section">
+  <div class="section-title">Dernier bilan biologique</div>
+  <div class="grid-2" style="margin-bottom:8px">
+    ${inp('bilan.date','Date / heure','datetime-local','')}
+    <div></div>
+  </div>
+  ${p.bilan.results.map((r,i)=>`<div class="bilan-row">
+    <input placeholder="Paramètre (ex: CRP)" value="${r.nom||''}" oninput="pats[${curPat}].bilan.results[${i}].nom=this.value">
+    <input placeholder="Valeur" value="${r.val||''}" oninput="pats[${curPat}].bilan.results[${i}].val=this.value" style="max-width:100px">
+    <button class="btn-del" onclick="pats[${curPat}].bilan.results.splice(${i},1);render()"><i class="ti ti-x" aria-hidden="true"></i></button>
+  </div>`).join('')}
+  <button class="btn-add" onclick="pats[${curPat}].bilan.results.push({nom:'',val:''});render()"><i class="ti ti-plus" aria-hidden="true"></i> Ajouter paramètre</button>
+</div>
+
+<div class="section">
+  <div class="section-title">Bilans infectieux</div>
+  ${p.infectieux.map((inf,i)=>`<div class="infect-row">
+    <div class="infect-label">Site infectieux ${i+1}</div>
+    <div class="grid-2">
+      <div class="field"><label>Type (ECBC, hémocultures…)</label><input value="${inf.type||''}" oninput="pats[${curPat}].infectieux[${i}].type=this.value"></div>
+      <div class="field"><label>Date prélèvement</label><input type="date" value="${inf.date||''}" oninput="pats[${curPat}].infectieux[${i}].date=this.value"></div>
+      <div class="field"><label>Germe identifié</label><input value="${inf.germen||''}" placeholder="En attente / Négatif / ..." oninput="pats[${curPat}].infectieux[${i}].germen=this.value"></div>
+      <div class="field"><label>Antibiothérapie</label><input value="${inf.atb||''}" placeholder="ex: Pipéracilline-tazobactam" oninput="pats[${curPat}].infectieux[${i}].atb=this.value"></div>
+    </div>
+    ${inf.atb?`<div class="field" style="margin-top:6px"><label>Début antibiothérapie</label><input type="date" value="${inf.dateAtb||''}" oninput="pats[${curPat}].infectieux[${i}].dateAtb=this.value" style="width:100%;font-size:13px;padding:6px 8px;border-radius:var(--radius);border:0.5px solid var(--border);background:var(--surface-2);color:var(--text-primary)">
+    ${inf.dateAtb?`<div style="font-size:12px;margin-top:4px;color:var(--text-accent)">J${Math.floor((Date.now()-new Date(inf.dateAtb))/86400000)} d'antibiotiques</div>`:''}</div>`:''}
+    <button class="btn-del" style="margin-top:8px" onclick="pats[${curPat}].infectieux.splice(${i},1);render()"><i class="ti ti-x" aria-hidden="true"></i> Supprimer</button>
+  </div>`).join('')}
+  <button class="btn-add" onclick="pats[${curPat}].infectieux.push({type:'',date:'',germen:'',atb:'',dateAtb:''});render()"><i class="ti ti-plus" aria-hidden="true"></i> Ajouter site infectieux</button>
+</div>
+
+<div class="section">
+  <div class="section-title">IVSE — Seringues auto-pulsées</div>
+  <div style="margin-bottom:8px;display:flex;align-items:center;gap:10px">
+    <div class="field" style="max-width:140px">
+      <label>Poids du patient (kg)</label>
+      <input type="number" placeholder="70" value="${p.poids||''}" oninput="pats[${curPat}].poids=this.value;render()">
+    </div>
+    ${p.poids?`<div style="font-size:11px;color:var(--text-2);padding-top:14px">Calcul γ/kg/min disponible</div>`:''}
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 80px 70px ${p.poids?'90px':''} 28px;gap:6px;margin-bottom:4px">
+    <span style="font-size:10px;color:var(--text-3);font-weight:500">Médicament</span>
+    <span style="font-size:10px;color:var(--text-3);font-weight:500">Dose/conc.</span>
+    <span style="font-size:10px;color:var(--text-3);font-weight:500">Vitesse (mL/h)</span>
+    ${p.poids?`<span style="font-size:10px;color:var(--text-3);font-weight:500">γ/kg/min</span>`:''}
+    <span></span>
+  </div>
+  ${p.ivse.map((s,i)=>{
+    let gamma='';
+    if(p.poids && s.vitesse && s.dose){
+      // dose format: "Xmg/50mL" ou "Xmcg/50mL" — on tente d'extraire
+      const m=s.dose.match(/([\d.]+)\s*(mg|mcg|µg)[\s\/\\]*(\d+)\s*mL/i);
+      if(m){
+        const qty=parseFloat(m[1]);
+        const unit=m[2].toLowerCase();
+        const vol=parseFloat(m[3]);
+        const concMcgPerMl=(unit==='mg'?qty*1000:qty)/vol;
+        const mcgPerMin=concMcgPerMl*parseFloat(s.vitesse)/60;
+        const gkgmin=mcgPerMin/parseFloat(p.poids);
+        gamma=gkgmin.toFixed(3);
+      }
+    }
+    return `<div style="display:grid;grid-template-columns:1fr 80px 70px ${p.poids?'90px':''} 28px;gap:6px;align-items:center;margin-bottom:6px">
+      <input style="font-size:12px;padding:5px 8px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text)" value="${s.nom||''}" placeholder="ex: Noradrénaline" oninput="pats[${curPat}].ivse[${i}].nom=this.value">
+      <input style="font-size:12px;padding:5px 8px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text)" value="${s.dose||''}" placeholder="4mg/50mL" oninput="pats[${curPat}].ivse[${i}].dose=this.value;render()">
+      <input type="number" style="font-size:12px;padding:5px 8px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text)" value="${s.vitesse||''}" placeholder="5" oninput="pats[${curPat}].ivse[${i}].vitesse=this.value;render()">
+      ${p.poids?`<div style="font-size:12px;padding:5px 8px;border-radius:8px;background:${gamma?'var(--accent-light)':'var(--surface-1)'};border:1px solid var(--border);color:${gamma?'var(--accent)':'var(--text-3)'};text-align:center;font-weight:${gamma?'600':'400'}">${gamma?gamma+' γ':'—'}</div>`:''}
+      <button class="btn-del" onclick="pats[${curPat}].ivse.splice(${i},1);render()"><i class="ti ti-x"></i></button>
+    </div>`;
+  }).join('')}
+  <button class="btn-add" onclick="pats[${curPat}].ivse.push({nom:'',dose:'',vitesse:''});render()"><i class="ti ti-plus" aria-hidden="true"></i> Ajouter IVSE</button>
+</div>
+
+<div class="section">
+  <div class="section-title">Perfusions</div>
+  ${p.perf.map((s,i)=>`<div class="ivse-row">
+    <input value="${s.nom||''}" placeholder="ex: NaCl 0,9%" oninput="pats[${curPat}].perf[${i}].nom=this.value">
+    <input value="${s.vol||''}" placeholder="500mL" oninput="pats[${curPat}].perf[${i}].vol=this.value">
+    <input type="number" value="${s.debit||''}" placeholder="mL/h" oninput="pats[${curPat}].perf[${i}].debit=this.value">
+    <button class="btn-del" onclick="pats[${curPat}].perf.splice(${i},1);render()"><i class="ti ti-x" aria-hidden="true"></i></button>
+  </div>`).join('')}
+  <button class="btn-add" onclick="pats[${curPat}].perf.push({nom:'',vol:'',debit:''});render()"><i class="ti ti-plus" aria-hidden="true"></i> Ajouter perfusion</button>
+</div>
+
+<div class="section">
+  <div class="section-title">Checklist traitements</div>
+  ${chk('checklist.ration','Ration de base assurée')}
+  ${chk('checklist.enterale','Alimentation entérale')}
+  ${chk('checklist.parenterale','Alimentation parentérale')}
+  ${chk('checklist.sng','Sonde naso-gastrique en place')}
+  ${chk('checklist.gastroprot','Protection gastrique (IPP)')}
+  ${chk('checklist.thrombopro','Thromboprophylaxie (HBPM / bas de contention)')}
+  ${chk('checklist.atb','Antibiothérapie en cours')}
+  ${chk('checklist.antiepilep','Antiépileptiques')}
+  <div class="field" style="margin-top:8px"><label>Traitements spécifiques / autres</label><textarea oninput="f('checklist.autres',this.value)">${p.checklist.autres||''}</textarea></div>
+</div>`;
+}
+
+function renderTab1(){
+  const p=pats[curPat];
+  const hours=['H0 (8h)','H4 (12h)','H8 (16h)','H12 (20h)','H16 (0h)','H20 (4h)','H24 (8h)'];
+  while(p.tournees.length<7) p.tournees.push({h:`H${p.tournees.length*4}`,fc:'',diurese:'',temp:'',glycemie:'',auscult:'',position:''});
+  return hours.map((h,i)=>`
+<div class="round-card">
+  <div class="round-header">
+    <span class="round-label"><i class="ti ti-clock" aria-hidden="true"></i> ${h}</span>
+    <span class="badge ${p.tournees[i].fc?'badge-ok':'badge-warn'}">${p.tournees[i].fc?'Remplie':'En attente'}</span>
+  </div>
+  <div class="grid-3">
+    <div class="field"><label>FC (bpm)</label><input type="number" value="${p.tournees[i].fc||''}" oninput="pats[${curPat}].tournees[${i}].fc=this.value"></div>
+    <div class="field"><label>Diurèse (mL)</label><input type="number" value="${p.tournees[i].diurese||''}" oninput="pats[${curPat}].tournees[${i}].diurese=this.value"></div>
+    <div class="field"><label>Temp. (°C)</label><input type="number" value="${p.tournees[i].temp||''}" oninput="pats[${curPat}].tournees[${i}].temp=this.value"></div>
+    <div class="field"><label>Glycémie cap. (g/L)</label><input type="number" value="${p.tournees[i].glycemie||''}" oninput="pats[${curPat}].tournees[${i}].glycemie=this.value"></div>
+    <div class="field"><label>Auscultation</label><input value="${p.tournees[i].auscult||''}" placeholder="ex: MV bilatéral" oninput="pats[${curPat}].tournees[${i}].auscult=this.value"></div>
+    <div class="field"><label>Position</label>
+      <select onchange="pats[${curPat}].tournees[${i}].position=this.value">
+        ${['','DD','DLG','DLD','PDP 30°','PDP 45°','Assis'].map(pos=>`<option ${p.tournees[i].position===pos?'selected':''}>${pos}</option>`).join('')}
+      </select>
+    </div>
+  </div>
+</div>`).join('');
+}
+
+const CATEG=[
+  {k:'neuro',label:'Neurologique',cls:'sel-neuro',evtcls:'event-neuro'},
+  {k:'resp',label:'Respiratoire',cls:'sel-resp',evtcls:'event-resp'},
+  {k:'hemody',label:'Hémodynamique',cls:'sel-hemody',evtcls:'event-hemody'},
+  {k:'gen',label:'Général',cls:'sel-gen',evtcls:'event-gen'},
+  {k:'meta',label:'Métabolique',cls:'sel-meta',evtcls:'event-meta'},
+  {k:'sept',label:'Septique',cls:'sel-sept',evtcls:'event-sept'}
+];
+
+let newEvtCat='neuro', newEvtTxt='';
+
+function renderTab2(){
+  const p=pats[curPat];
+  if(!p.consignes) p.consignes=[];
+  return `
+<div class="section">
+  <div class="section-title">Consignes — P${curPat+1} ${p.nom?'('+p.nom+')':''}</div>
+  ${p.consignes.map((c,i)=>`
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+    <input type="checkbox" style="width:16px;height:16px;flex-shrink:0;accent-color:var(--accent);cursor:pointer" ${c.done?'checked':''} onchange="pats[${curPat}].consignes[${i}].done=this.checked;render()">
+    <input value="${c.txt||''}" oninput="pats[${curPat}].consignes[${i}].txt=this.value" placeholder="Consigne..." style="flex:1;font-size:13px;padding:7px 10px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);${c.done?'text-decoration:line-through;color:var(--text-3)':''}">
+    <span class="priority-badge p-${c.prio}" onclick="pats[${curPat}].consignes[${i}].prio=cyclePrio('${c.prio}');render()" style="flex-shrink:0">${c.prio==='high'?'Urgente':c.prio==='med'?'Importante':'Routine'}</span>
+    <button class="btn-del" style="flex-shrink:0" onclick="pats[${curPat}].consignes.splice(${i},1);render()"><i class="ti ti-x"></i></button>
+  </div>`).join('')}
+  <button class="btn-add" onclick="pats[${curPat}].consignes.push({txt:'',prio:'med',done:false});render()"><i class="ti ti-plus"></i> Ajouter consigne</button>
+</div>`;
+}
+
+function renderTab5(){
+  // Toutes les consignes de tous les patients
+  const hasSome = pats.some(p=>p.consignes&&p.consignes.length>0);
+  return `
+<div class="section">
+  <div class="section-title">📋 Toutes les consignes — tous patients</div>
+  ${!hasSome?`<p style="color:var(--text-3);font-size:13px">Aucune consigne enregistrée.</p>`:''}
+  ${pats.map((p,pi)=>{
+    if(!p.consignes||p.consignes.length===0) return '';
+    return `<div class="round-card" style="margin-bottom:10px">
+      <div style="font-size:12px;font-weight:600;color:var(--accent);margin-bottom:8px">P${pi+1}${p.nom?' — '+p.nom:''}</div>
+      ${p.consignes.map((c,ci)=>`
+      <div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border)">
+        <input type="checkbox" style="width:16px;height:16px;flex-shrink:0;accent-color:var(--accent);cursor:pointer" ${c.done?'checked':''} onchange="pats[${pi}].consignes[${ci}].done=this.checked;render()">
+        <span style="flex:1;font-size:13px;${c.done?'text-decoration:line-through;color:var(--text-3)':'color:var(--text)'}">${c.txt||'—'}</span>
+        <span class="priority-badge p-${c.prio}">${c.prio==='high'?'Urgente':c.prio==='med'?'Importante':'Routine'}</span>
+      </div>`).join('')}
+    </div>`;
+  }).join('')}
+</div>`;
+}
+
+function cyclePrio(p){return p==='high'?'med':p==='med'?'low':'high'}
+
+function renderTab3(){
+  const allEvts=[];
+  pats.forEach((p,i)=>p.events.forEach(e=>allEvts.push({...e,pat:i+1})));
+  return `
+<div class="section">
+  <div class="section-title">Ajouter un événement — P${curPat+1}</div>
+  <div class="tag-select">
+    ${CATEG.map(c=>`<span class="tag-opt${newEvtCat===c.k?' '+c.cls:''}" onclick="newEvtCat='${c.k}';render()">${c.label}</span>`).join('')}
+  </div>
+  <div style="display:flex;gap:8px">
+    <input id="evtInp" value="${newEvtTxt}" oninput="newEvtTxt=this.value" placeholder="Décrire l'événement..." style="flex:1;font-size:13px;padding:7px 10px;border-radius:var(--radius);border:0.5px solid var(--border);background:var(--surface-2);color:var(--text-primary)">
+    <button class="btn-primary" onclick="addEvent()">Ajouter</button>
+  </div>
+</div>
+<div class="sep"></div>
+<div class="section">
+  <div class="section-title">Fil des événements (tous patients)</div>
+  ${allEvts.length===0?`<p style="color:var(--text-muted);font-size:13px">Aucun événement enregistré.</p>`:''}
+  ${allEvts.map((e,i)=>{
+    const c=CATEG.find(x=>x.k===e.cat)||CATEG[0];
+    return `<div class="event-card ${c.evtcls}">
+      <div class="event-tag"><span style="opacity:.7">P${e.pat} · ${e.time}</span> — ${c.label}</div>
+      <div class="event-text">${e.txt}</div>
+    </div>`;
+  }).join('')}
+</div>`;
+}
+
+function addEvent(){
+  if(!newEvtTxt.trim()) return;
+  const now=new Date();
+  pats[curPat].events.push({cat:newEvtCat,txt:newEvtTxt,time:now.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})});
+  pats[curPat].alertFlag=true;
+  newEvtTxt='';
+  buildPatStrip();
+  render();
+}
+
+function renderTab4(){
+  return `
+<div class="section">
+  <div class="section-title">Notes à signaler au staff — P${curPat+1}</div>
+  <textarea class="notes-area" oninput="pats[${curPat}].notes=this.value">${pats[curPat].notes||''}</textarea>
+</div>
+<div class="sep"></div>
+<div class="section">
+  <div class="section-title">Note générale de garde</div>
+  <textarea class="notes-area" style="min-height:100px" oninput="globalNotes=this.value">${globalNotes}</textarea>
+</div>`;
+}
+
+function render(){
+  const renders=[renderTab0,renderTab1,renderTab2,renderTab3,renderTab4,renderTab5];
+  document.getElementById('mainContent').innerHTML=renders[curTab]();
+}
+
+buildPatStrip();
+render();
+</script>
